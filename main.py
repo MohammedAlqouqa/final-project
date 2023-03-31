@@ -18,9 +18,9 @@ class Student:
         self.student_level = level
         self.student_courses = []
 
-    def add_course(self, course):
-        if course.course_level == self.student_level:
-            self.student_courses.append(course)
+    def add_course(self, crs):
+        if crs.course_level == self.student_level:
+            self.student_courses.append(crs)
             print("Course added successfully")
         else:
             print("Course level does not match student level")
@@ -28,29 +28,32 @@ class Student:
     def display_details(self):
         print("Name:", self.student_name)
         print("Level:", self.student_level)
+        print("ID:", self.student_id)
         print("Courses enrolled:")
-        for course in self.student_courses:
-            print(course.course_name, "-", course.course_level)
+        for crs in self.student_courses:
+            print(crs.course_name, "-", crs.course_level)
+
 
 courses = []
 students = []
+selected_student = []
+selected_course = []
 
 while True:
-    # Student Course Management System Menu
-    # 1. Add new student
-    # 2. Remove student
-    # 3. Edit student
-    # 4. Display all students
-    # 5. Create new course
-    # 6. Add course to student
-    # 7. Exit
-
+    print("Welcome to the Student Course Management System!")
+    print("1. Add new student")
+    print("2. Remove student")
+    print("3. Edit student")
+    print("4. Display all students")
+    print("5. Create new course")
+    print("6. Add course to student")
+    print("7. Exit")
     choice = int(input("Enter choice (1-7): "))
 
     if choice == 1:
         name = input("Enter student name: ")
         level = input("Enter student level (A/B/C): ")
-        while level not in ["A", "B", "C"]:
+        while level not in ["A", "B", "C","a","b","c"]:
             level = input("Invalid input. Please enter student level again (A/B/C): ")
         student = Student(name, level)
         students.append(student)
@@ -93,16 +96,30 @@ while True:
     elif choice == 5:
         name = input("Enter course name: ")
         level = input("Enter course level (A/B/C): ")
-        while level not in ["A", "B", "C"]:
+        while level not in ["A", "B", "C","a","b","c"]:
             level = input("Invalid input. Please enter course level again (A/B/C): ")
         course = Course(name, level)
+        print("created new course with id: ",course.course_id)
         courses.append(course)
+
         print("Course created successfully")
+        for crs in courses:
+            print("course_id: ",crs.course_id)
 
     elif choice == 6:
         student_id = int(input("Enter student ID: "))
         course_id = int(input("Enter course ID: "))
-        student_found = False
+        for student in students:
+            if student.student_id == student_id:
+                selected_student = student
+        for course in courses:
+            if course.course_id == course_id:
+                selected_course = course
+        if selected_student.student_level == selected_course.course_level:
+            selected_student.student_courses.append(selected_course)
+        else:
+            print("course level not equal student level")
+
 
     elif choice == 7:
         break
